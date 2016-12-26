@@ -1,0 +1,14 @@
+{"level":"info","message":"Got request GET /echo?message=Hello1","timestamp":"2016-12-26T06:06:05.835Z"}
+{"level":"debug","message":"Echo: Hello1","timestamp":"2016-12-26T06:06:05.838Z"}
+{"level":"info","message":"Got request GET /echo?message=","timestamp":"2016-12-26T06:07:05.537Z"}
+{"level":"error","message":"Unknow URL","timestamp":"2016-12-26T06:07:05.537Z"}
+{"level":"info","message":"Got request GET /echo?message=111","timestamp":"2016-12-26T06:07:56.495Z"}
+{"level":"debug","message":"Echo: 111","timestamp":"2016-12-26T06:07:56.505Z"}
+{"level":"info","message":"Got request GET /echo?message=111","timestamp":"2016-12-26T06:11:19.680Z"}
+{"level":"debug","message":"Echo: 111","timestamp":"2016-12-26T06:11:19.683Z"}
+{"level":"info","message":"Got request GET /echo?message=test","timestamp":"2016-12-26T06:12:06.937Z"}
+{"level":"debug","message":"Echo: test","timestamp":"2016-12-26T06:12:06.937Z"}
+{"level":"info","message":"Got request GET /echo1?message=test","timestamp":"2016-12-26T06:12:14.186Z"}
+{"level":"error","message":"Unknow URL","timestamp":"2016-12-26T06:12:14.186Z"}
+{"level":"info","message":"Got request GET /echo?message=test","timestamp":"2016-12-26T06:12:24.820Z"}
+{"level":"debug","message":"Echo: test","timestamp":"2016-12-26T06:12:24.820Z"}
