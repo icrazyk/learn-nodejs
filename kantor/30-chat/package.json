@@ -3,10 +3,12 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node app.js"
+    "start": "set NODE_PATH=.&set NODE_ENV=development&nodemon app.js"
   },
   "dependencies": {
+    "ect": "^0.5.9",
+    "ejs": "*",
     "express": "3.21.2",
-    "ejs": "*"
+    "winston": "^2.3.0"
   }
 }
