@@ -5,8 +5,12 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
+var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
+var mongoose = require('./lib/mongoose');
 var debug = require('debug')('server:server');
 var HttpError = require('./error/').HttpError;
+var config = require('./config/');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -23,6 +27,18 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser());
 app.use(cookieParser());
+app.use(session({
+  secret: config.get('session:secret'),
+  key: config.get('session:key'),
+  cookie: config.get('session:cookie'),
+  store: new MongoStore({ mongooseConnection: mongoose.connection }),
+}));
+
+app.use(function(req, res, next) {
+  req.session.numberOfVisits = req.session.numberOfVisits + 1 || 1;
+  res.send("Visits: " + req.session.numberOfVisits);
+})
+
 app.use(require('./middleware/sendHttpError'));
 app.use(express.static(path.join(__dirname, 'public')));
 
