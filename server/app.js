@@ -5,7 +5,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
-var debug = require('debug')('server:app');
+var debug = require('debug')('server:server');
 var HttpError = require('./error/').HttpError;
 
 var indexRouter = require('./routes/index');
