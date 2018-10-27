@@ -1,0 +1,44 @@
+extends layouts/layout
+
+block content
+  h1 Регистрация и вход
+  p Если такого пользователя нет - он будет создан
+  form(name="login-form")
+    div.form-group
+      label(for="username") User name
+      input(type="text" class="form-control" id="username" name="username" placeholder="Enter username")
+    div.form-group
+      label(for="password") Password
+      input(type="password" class="form-control" id="password" name="password" placeholder="Password")
+    div.form-group
+      button(type="submit" class="btn btn-primary" data-loading-text="Отправляю...") Submit
+      span.help-block.error
+
+  script.
+    $(document.forms['login-form']).on('submit', function() {
+      var form = $(this);
+
+      $('.error', form).html('');
+      $(':submit', form).button("loading");
+
+      $.ajax({
+        url: '/login',
+        method: 'POST',
+        data: form.serialize(),
+        complete: function() {
+          $(":submit", form).button('reset');
+        },
+        statusCode: {
+          200: function() {
+            form.html('Вы вошли на сайт').addClass('alert-success');
+            window.location.href='/chat';
+          },
+          403: function(jqXHR) {
+            var error = JSON.parse(jqXHR.responseText);
+            $('.error', form).html(error.message);
+          }
+        }
+      });
+
+      return false;
+    })

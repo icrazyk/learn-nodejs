@@ -12,9 +12,6 @@ var debug = require('debug')('server:server');
 var HttpError = require('./error/').HttpError;
 var config = require('./config/');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-
 var app = express();
 
 // view engine setup
@@ -34,16 +31,12 @@ app.use(session({
   store: new MongoStore({ mongooseConnection: mongoose.connection }),
 }));
 
-app.use(function(req, res, next) {
-  req.session.numberOfVisits = req.session.numberOfVisits + 1 || 1;
-  res.send("Visits: " + req.session.numberOfVisits);
-})
-
 app.use(require('./middleware/sendHttpError'));
+app.use(require('./middleware/loadUser'));
+
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+require('./routes/')(app);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
