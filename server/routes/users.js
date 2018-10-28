@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var User = require('../models/user.js').User;
 var HttpError = require('../error/').HttpError;
-var ObjectID = require('mongodb').ObjectID
+var ObjectID = require('mongodb').ObjectID;
 
 /* GET users listing. */
 router.get('/', (req, res, next) => {
