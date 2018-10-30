@@ -6,7 +6,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
 var session = require('express-session');
-var MongoStore = require('connect-mongo')(session);
 var mongoose = require('./lib/mongoose');
 var debug = require('debug')('server:server');
 var HttpError = require('./error/').HttpError;
@@ -24,11 +23,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser());
 app.use(cookieParser());
+
+var sessionStore = require('./lib/sessionStore');
+
 app.use(session({
   secret: config.get('session:secret'),
   key: config.get('session:key'),
   cookie: config.get('session:cookie'),
-  store: new MongoStore({ mongooseConnection: mongoose.connection }),
+  store: sessionStore,
 }));
 
 app.use(require('./middleware/sendHttpError'));

@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "npx nodemon ./bin/www",
-    "debug": "DEBUG=server:* npm start"
+    "debug": "DEBUG=server:* npm start",
+    "debugwin": "set DEBUG=server:* & npm start"
   },
   "dependencies": {
     "async": "^2.6.1",
