@@ -58,22 +58,3 @@ new Promise(open)
   .finally(() => {
     mongoose.disconnect();
   });
-
-// mongoose.connection.on('open', function() {
-//   var db = mongoose.connection.db;
-
-//   db.dropDatabase(function(err) {
-//     if (err) throw err;
-
-//     var vasya = new User({ username: "Вася", password: "secret" });
-//     var peter = new User({ username: "Петя", password: "12345" });
-//     var admin = new User({ username: "admin", password: "truehero" });
-
-//     Promise
-//       .all([vasya.save(), peter.save(), admin.save()])
-//       .then((result) => {
-//         console.log(result);
-//         mongoose.disconnect();
-//       });
-//   })
-// })

@@ -11,31 +11,50 @@ block content
     var socket = io();
     var form = $('#form');
     var ul = $('#messages');
+    var input = $('#input');
+    input.prop('disabled', true);
 
-    function printMsg(msg) {
-      $('<li>', { text: msg }).appendTo(ul);
+    socket
+      .on('message', function(username, message) {
+        printMsg(`${username}> ${message}`);
+      })
+      .on('leave', function(username) {
+        printStatus(`${username} вышел из чата`);
+      })
+      .on('join', function(username) {
+        printStatus(`${username} вошел в чат`);
+      })
+      .on('connect', function() {
+        printStatus('Соединение настроено');
+        form.on('submit', sendMessage);
+        input.prop('disabled', false);
+      })
+      .on('disconnect', function() {
+        printStatus('Соединение потеряно');
+        form.off('submit', sendMessage);
+        input.prop('disabled', true);
+      })
+      .on('error', function(reason) {
+        if (reason == "handshake unauthorized") {
+          printStatus("Вы вышли из сайта");
+        }
+      })
+
+    function sendMessage() {
+      var text = input.val();
+      socket.emit('message', text, function() {
+        printMsg(`я> ${text}`);
+      });
+      input.val('');
+      return false;
     }
 
-    form.submit(function() {
-      var input = $(this).find('#input');
-      var text = input.val();
-      input.val('');
-      socket.emit('message', text, function(data) {
-        console.log(data);
-        printMsg(text);
-      });
-      return false;
-    });
+    function printStatus(status) {
+      $('<li>').append($('<i>').text(status)).appendTo(ul);
+    }
 
-    socket.on('message', function(text) {
-      printMsg(text);
-    });
+    function printMsg(msg) {
+      $('<li>').text(msg).appendTo(ul);
+    }
 
-    socket.on('connect', function() {
-      printMsg('Соединение настроено');
-    });
-
-    socket.on('disconnect', function() {
-      printMsg('Соединение потеряно');
-    });
 
