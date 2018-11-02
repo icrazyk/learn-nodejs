@@ -49,7 +49,6 @@ module.exports = function(server) {
       function(callback) {
         handshake.cookies = cookie.parse(handshake.headers.cookie || '');
         var sidCookie = handshake.cookies[config.get('session:key')];
-        console.log(config.get('session:secret'));
         var sid = cookieParser.signedCookie(sidCookie, config.get('session:secret'));
         loadSession(sid, callback);
       },
@@ -80,7 +79,31 @@ module.exports = function(server) {
 
       throw err;
     });
-  })
+  });
+
+  io.on('session:reload', function(sid) {
+    var clients = io.clients();
+
+    clients.forEach(client => {
+      if (client.handshake.session.id != sid) return;
+
+      loadSession(sid, function(err, session) {
+        if(err) {
+          client.emit("error", "server error");
+          client.disconnect();
+          return;
+        }
+
+        if(!session) {
+          client.emit("error", "handshake unauthorized");
+          client.disconnect();
+          return;
+        }
+
+        client.handshake.session = session;
+      })
+    });
+  });
 
   io.on('connection', function(socket) {
     var { username } = socket.request.user;
